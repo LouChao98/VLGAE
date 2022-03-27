@@ -1,0 +1,4 @@
+wandb:
+  _target_: src.utility.pl_callback.WatchModelWithWandb
+  log: ${in_debugger:gradients,null} # all, gradients, parameters, None
+  log_freq: 100

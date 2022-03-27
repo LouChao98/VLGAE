@@ -1,0 +1,31 @@
+defaults:
+  - logger: ~
+  - callbacks:
+    - progressbar
+    # - early_stopping
+    - lr_monitor # may early-stopping
+    - best_watcher
+    - weights_summary
+  - override /hydra/job_logging@_global_.hydra.job_logging: custom
+
+_target_: src.utility.fn.instantiate_trainer
+
+gpus: 1
+gradient_clip_val: 5.
+track_grad_norm: -1
+max_epochs: 50
+max_steps: -1
+val_check_interval: 1.0 # int for n step, float for in epoch
+accumulate_grad_batches: 1
+precision: 32
+num_sanity_val_steps: ${in_debugger:1,5}
+resume_from_checkpoint: ~
+detect_anomaly: false
+deterministic: false
+
+# following are settings you should not touch in most cases
+accelerator: gpu
+strategy: ${accelerator:${.gpus}}
+replace_sampler_ddp: false
+multiple_trainloader_mode: min_size
+enable_model_summary: false

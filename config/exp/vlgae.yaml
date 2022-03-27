@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+  - override /data: vlparse
+  - override /model: vlgae
+  - override /model/optimize@optimize: linear
+
+datamodule:
+  num_lex: 0
+  max_len:
+    train: 50
+
+trainer:
+  val_check_interval: 0.5
+  max_epochs: 50
+
+optimizer:
+  args:
+    lr: 1.0e-3
+
+project: unnamed

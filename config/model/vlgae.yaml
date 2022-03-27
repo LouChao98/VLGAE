@@ -1,0 +1,120 @@
+# @package _global_
+
+defaults:
+  - metric: attachment_box_rel
+  - embedding: en
+  - optimize: constant
+
+_match_hidden_size: 128
+_hidden_size: 256
+_dropout: 0.33
+_rank: 16
+
+embedding:
+  use_word: false
+  use_subword: true
+  use_tag: true
+  tag_embedding:
+    args:
+      embedding_dim: 32
+
+encoder:
+  _target_: src.model.text_encoder.MLPEncoder
+  dropout: 0.33
+  shared_dropout: 0
+  n_hidden: ${_hidden_size}
+
+vis_encoder:
+  _target_: src.model.vis_encoder.VisBoxRelSimpleEncoder
+  n_in: 2048
+  n_hidden: ${_hidden_size}
+  dropout: 0.
+  activate: true
+  use_attr: true
+  use_img: false
+  img_feat: true
+
+model:
+  _target_: src.model.DependencyBoxRel
+  _recursive_: false
+
+  add_rel: true
+  add_attr: true
+  add_image: true
+  add_marginal: true
+
+  margin: 1
+  language_factor_mode: word+maxdep
+  visual_factor_mode: unprune
+  visual_factor_cfg:
+    n_hidden: ${_match_hidden_size}
+  feat_fuse_mode: attention
+  feat_fuse_args:
+    num_heads: 4
+    dropout: 0.33
+    replace: false
+    aug_with_matching: true
+  gather_logit_mode: simple
+  gather_logit_args: ~
+  loss_grounding_mode: factor|ce
+  loss_grounding_args:
+    use_pos_prior: true
+    vis2txt: 1
+  decode_grounding_mode: on_factor
+  decode_grounding_args:
+    use_pos_prior: true
+    use_heuristic: true
+  grounding_interpolation: 0.5
+
+  word_encoder:
+    _target_: src.model.nn.MLP
+    n_hidden: ${_match_hidden_size}
+    dropout: 0.33
+    activate: false
+
+  init_method: 'y'
+  init_epoch: 5
+
+  dep_model_cfg:
+    _target_: src.model.DiscriminativeNDMV
+    _recursive_: false
+    context_mode: 'mean'
+    init_method: ${..init_method}
+    init_epoch: ${..init_epoch}
+    viterbi_training: true
+    mbr_decoding: false
+    extended_valence: true
+    function_mask: false
+
+    variational_mode: 'none'
+    z_dim: 0
+
+    mid_ff:
+      _target_: src.model.nn.DMVSkipConnectEncoder
+      n_bottleneck: 150
+      n_mid: 0
+      dropout: 0.3
+
+    head_ff:
+      _target_: src.model.nn.MLP
+      n_hidden: ${_hidden_size}
+      dropout: ${_dropout}
+    child_ff:
+      _target_: src.model.nn.MLP
+      n_hidden: ${_hidden_size}
+      dropout: ${_dropout}
+    root_ff:
+      _target_: src.model.nn.MLP
+      n_hidden: ${_hidden_size}
+      dropout: ${_dropout}
+    dec_ff:
+      _target_: src.model.nn.MLP
+      n_hidden: ${_hidden_size}
+      dropout: ${_dropout}
+
+    attach_rank: ${_rank}
+    dec_rank: ${_rank}
+    root_rank: ${_rank}
+
+    root_emb_dim: 10
+    dec_emb_dim: 10

@@ -1,0 +1,3 @@
+weights_summary:
+  _target_: pytorch_lightning.callbacks.ModelSummary
+  max_depth: ${in_debugger:5,2}

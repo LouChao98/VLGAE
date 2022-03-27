@@ -1,0 +1,14 @@
+# @package metric
+_target_: src.utility.metric.MultiMetric
+
+dep:
+  _target_: src.utility.metric.DependencyParsingMetric
+  extra_vocab: ${..extra_vocab}
+
+img:
+  _target_: src.utility.metric.FactorImageMatchingMetric
+  extra_vocab: ${..extra_vocab}
+
+match:
+  _target_: src.utility.metric.BoxRelMatchingMetric
+  extra_vocab: ${..extra_vocab}

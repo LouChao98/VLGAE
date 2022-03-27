@@ -1,0 +1,29 @@
+# @package hydra.job_logging
+
+version: 1
+formatters:
+  console:
+    (): src.utility.logger.ColorFormatter
+    format: '%(message)s'
+  detail:
+    format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+    datefmt: '%y-%m-%d %H:%M:%S'
+handlers:
+  console:
+    class: src.utility.logger.TqdmLoggingHandler
+    formatter: console
+    level: DEBUG
+  file:
+    class: logging.FileHandler
+    formatter: detail
+    filename: ${hydra.job.name}.log
+root:
+  handlers: [console, file]
+loggers:
+  fastNLP:
+    handlers: [console, file]
+  lightning:
+    handlers: [console, file]
+  nni:
+    handlers: [console, file]
+disable_existing_loggers: false

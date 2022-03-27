@@ -1,0 +1,33 @@
+# some cfg should not belong to any submodule
+seed: 1
+project: untitled
+name: ${name_guard:@@@AUTO@@@}
+watch_field: val/loss
+watch_mode: min
+root: ${hydra:runtime.cwd}
+output_name: ~
+
+pipeline:
+  _target_: src.pipeline.Pipeline
+
+  load_from_checkpoint: ~
+  loss_reduction_mode: token
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+  job:
+    env_set:
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_DATASETS_OFFLINE: '1'
+      TRANSFORMERS_OFFLINE: '1'
+      TORCH_WARN_ONCE: '1'
+      NUMEXPR_MAX_THREADS: '8'
+      DEBUG_MODE: ''
+
+defaults:
+  - _self_
+  - trainer: train
+  - data: vlparse
+  - model: vlgae

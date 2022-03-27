@@ -1,0 +1,3 @@
+from .embedding import EmbeddingAdaptor, Embedding
+from .fastnlp_embedding import FastNLPEmbeddingAdaptor, FastNLPCharEmbeddingAdaptor, FastNLPEmbeddingVariationalAdaptor
+from .transformers_embedding import TransformersAdaptor, TransformersEmbedding

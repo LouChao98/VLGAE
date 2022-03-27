@@ -1,0 +1,32 @@
+# @package _global_
+
+datamodule:
+  _target_: src.datamodule.task.DepDataModule
+  train_path: ${root}/data/vlparse/train.conll
+  train_init_path: ${root}/vlparse/init.conll
+  dev_path: ${root}/data/vlparse/val.conll
+  test_path: ${root}/data/vlparse/test.conll
+
+  use_tag: true
+  num_lex: 200
+  num_token: 99999
+  ignore_stop_word: false
+
+  normalize_word: true
+  build_no_create_entry: true
+
+  train_dataloader:
+    token_size: 5000
+    num_bucket: 10
+    batch_size: 64
+  dev_dataloader:
+    num_bucket: 8
+    token_size: 10000
+  test_dataloader:
+    num_bucket: 8
+    token_size: 10000
+  max_len:
+    train: 15
+
+trainer:
+  val_check_interval: 0.5

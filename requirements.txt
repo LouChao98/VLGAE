@@ -1,0 +1,10 @@
+hydra-core
+pytorch-lightning
+transformers
+easydict
+colorama
+fastnlp
+nltk
+wandb
+matplotlib
+seaborn

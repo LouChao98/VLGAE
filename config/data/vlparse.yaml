@@ -1,0 +1,38 @@
+# @package _global_
+
+datamodule:
+  _target_: src.datamodule.task.VLParseDataModule
+  train_path: ${root}/data/vlparse/train
+  train_init_path: ${root}/data/vlparse/init
+  dev_path: ${root}/data/vlparse/val
+  test_path: ${root}/data/vlparse/test
+
+  use_img: false
+  use_gold_scene_graph: false
+  sg_path: ${root}/data/vlparse/vlparse.json
+
+  use_tag: true
+  num_lex: 200
+  num_token: 99999
+  ignore_stop_word: false
+
+  normalize_word: true
+  build_no_create_entry: true
+  max_len:
+    train: 10     
+
+  train_dataloader:
+    token_size: 5000
+    num_bucket: 10
+    batch_size: 64
+  dev_dataloader:
+    token_size: 5000
+    num_bucket: 8
+    batch_size: 64
+  test_dataloader:
+    token_size: 5000
+    num_bucket: 8
+    batch_size: 64
+
+trainer:
+  val_check_interval: 0.5

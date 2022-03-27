@@ -1,0 +1,7 @@
+progress_bar:
+  _target_: src.utility.pl_callback.MyProgressBar
+  refresh_rate: 1
+  process_position: 0
+
+#progress_bar:
+#  _target_: pytorch_lightning.callbacks.RichProgressBar

@@ -1,0 +1,11 @@
+best_watcher:
+  _target_: src.utility.pl_callback.BestWatcherCallback
+  monitor: ${watch_field}
+  mode: ${watch_mode}
+  hint: true
+  save:
+    dirpath: checkpoint
+    filename: "{epoch}-{step}-{${watch_field}:.2f}"
+    start_patience: 2
+  write: 'new'
+  report: true

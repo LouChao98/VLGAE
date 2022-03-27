@@ -1,0 +1,42 @@
+# @package _global_
+
+defaults:
+  - override /data: vlparse_lang_only
+  - override /model: lang_only
+
+datamodule:
+  num_lex: 0
+  ignore_stop_word: true
+
+dataloader:
+  default:
+    batch_size: 16
+
+encoder:
+  hidden_size: 400
+  num_layers: 3
+  lstm_dropout: 0.2
+
+model:
+  init_method: 'y'
+  context_mode: 'hx'
+  init_epoch: 3
+
+  mid_ff:
+    n_bottleneck: 0
+    n_mid: 100
+    dropout: 0.2
+  root_emb_dim: 10
+  dec_emb_dim: 10
+
+  variational_mode: 'none'
+  z_dim: 64
+
+optimizer:
+  args:
+    lr: 0.0005
+
+_rank: 32
+_dropout: 0.5
+_hidden_size: 384
+project: unnamed

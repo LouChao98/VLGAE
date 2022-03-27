@@ -1,0 +1,71 @@
+# @package _global_
+
+defaults:
+  - embedding: en
+  - metric: attachment
+  - optimize: linear
+
+encoder:
+  _target_: src.model.text_encoder.RNNEncoder
+  reproject_emb: 0
+  reproject_out: 0
+  mix: false
+  pre_shared_dropout: 0.1
+  pre_dropout: 0.1
+  post_shared_dropout: 0.1
+  post_dropout: 0.1
+  hidden_size: 200
+  proj_size: 0
+  num_layers: 2
+  output_layers: -1
+  init_version: zy
+  shared_dropout: true
+  lstm_dropout: 0.33
+
+_hidden_size: 500
+_dropout: 0.33
+_rank: 32
+
+model:
+  _target_: src.model.DiscriminativeNDMV
+  _recursive_: false
+  context_mode: hx
+  init_method: 'y'
+  init_epoch: 3
+  viterbi_training: true
+  mbr_decoding: false
+  extended_valence: true
+  function_mask: false
+
+  variational_mode: 'none'
+  z_dim: 0
+
+  mid_ff:
+    _target_: src.model.nn.DMVSkipConnectEncoder
+    n_bottleneck: 0
+    n_mid: 0
+    dropout: 0.
+
+  head_ff:
+    _target_: src.model.nn.MLP
+    n_hidden: ${_hidden_size}
+    dropout: ${_dropout}
+  child_ff:
+    _target_: src.model.nn.MLP
+    n_hidden: ${_hidden_size}
+    dropout: ${_dropout}
+  root_ff:
+    _target_: src.model.nn.MLP
+    n_hidden: ${_hidden_size}
+    dropout: ${_dropout}
+  dec_ff:
+    _target_: src.model.nn.MLP
+    n_hidden: ${_hidden_size}
+    dropout: ${_dropout}
+  
+  attach_rank: ${_rank}
+  dec_rank: ${_rank}
+  root_rank: ${_rank}
+
+  root_emb_dim: 50
+  dec_emb_dim: 50

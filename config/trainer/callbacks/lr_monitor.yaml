@@ -1,0 +1,4 @@
+lr_monitor:
+  _target_: src.utility.pl_callback.LearningRateMonitorWithEarlyStop
+  logging_interval: 'epoch' # None, step, epoch. None=following scheduler
+  minimum_lr: 1e-8

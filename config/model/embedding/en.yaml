@@ -1,0 +1,52 @@
+# @package embedding
+
+# embedding args
+use_word: true
+use_tag: true
+use_subword: false
+dropout: 0.
+
+# embedding item args
+word_embedding:
+  args:
+    _target_: fastNLP.embeddings.StaticEmbedding
+    model_dir_or_name: ${..._emb_mapping.glove100}
+    min_freq: 2
+    lower: true
+  adaptor_args:
+    _target_: src.model.embedding.FastNLPEmbeddingVariationalAdaptor
+    mode: basic
+    out_dim: 0
+  field: word
+  normalize_method: mean+std
+  normalize_time: begin
+tag_embedding:
+  args:
+    _target_: fastNLP.embeddings.StaticEmbedding
+    embedding_dim: 100
+    init_embed: normal
+  adaptor_args:
+    _target_: src.model.embedding.FastNLPEmbeddingAdaptor
+  field: tag
+  normalize_method: mean+std
+  normalize_time: begin
+transformer:
+  args: 
+    _target_: src.model.embedding.TransformersEmbedding
+    model: bert-base-cased
+    n_layers: 1
+    n_out: 0
+    requires_grad: false
+  adaptor_args:
+    _target_: src.model.embedding.TransformersAdaptor
+  field: subword
+  requires_vocab: false
+
+
+# others
+_emb_mapping:
+  glove100: ${root}/data/glove/glove.6B.100d.txt
+  glove300: ${root}/data/glove/glove.840B.300d.txt
+  glove6b_300: ${root}/data/glove/glove.6B.300d.txt
+  bio: ${root}/data/bio_nlp_vec/PubMed-shuffle-win-30.txt
+  jose100: ${root}/data/jose/jose_100d.txt

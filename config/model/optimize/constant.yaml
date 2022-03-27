@@ -1,0 +1,14 @@
+# @package _global_
+
+optimizer:
+  groups: 
+    - pattern: dependency.embedding.transformer
+      lr: 1.0e-5
+  args:
+    _target_: torch.optim.Adam
+    lr: 1.0e-3
+    betas: [ 0.9, 0.999 ]
+    weight_decay: 0.
+    eps: 1.0e-12
+
+scheduler: ~

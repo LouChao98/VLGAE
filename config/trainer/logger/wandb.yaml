@@ -1,0 +1,7 @@
+
+_target_: pytorch_lightning.loggers.WandbLogger
+name: ${name}
+project: ${project}
+tags: []
+save_code: false
+save_dir: ${root}/outputs
