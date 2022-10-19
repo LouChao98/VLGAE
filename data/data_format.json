@@ -1,0 +1,59 @@
+{
+    "<img_id>": {
+        "image": {
+            "coco_id": 0,  // MSCOCO id
+            "vg_id": 0,  // VisualGenome id
+            "height": 0,
+            "width": 0
+        },
+        "box": {
+            "<box_id>": {
+                "width": 0.0,  // percentage of image width
+                "height": 0.0,  // percentage of image height
+                "x": 0.0,  // percentage of image width
+                "y": 0.0,   // percentage of image height
+                "label": "region label from VisualGenome",
+                "attribute": "list of attributes separated by semicolon"
+            },
+            ...
+        },
+        "relationship":{
+            "<relationship_id": {
+                "from": "<box_id>",
+                "to": "<box_id>",
+                "label": "relationship label from VisualGenome"
+            },
+            ...
+        },
+        "sentence": {
+            "<sentence_id>": {
+                "text": "the sentence",
+                "pos": "part-of-speech tags",
+                "dephead": "dependency heads",
+                "span": {
+                    "<span_id>": {  // object
+                        "label": "object",
+                        "start": 0, // inclusive character offset
+                        "end": 0, // exclusive character offset
+                        "attribute_start": 0, // inclusive character offset
+                        "attribute_end": 0, // exclusive character offset, (0,0)=no attribute
+                        "text": "text",
+                        "attribute_text": "attribute_text",
+                        "alignment": ["<span_id>"]
+                    },
+                    "<span_id": {  // relationship
+                        "label": "relationship",
+                        "start": 0, // inclusive character offset
+                        "end": 0, // exclusive character offset
+                        "text": "text",
+                        "of": ["<span_id>"],
+                        "alignment": ["<relationship>"]
+                    },
+                    ...
+                }
+            },
+            ...
+        }
+    },
+    ...
+}
